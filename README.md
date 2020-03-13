@@ -1,6 +1,8 @@
 # word cloud
 
-<video src="/Users/kimdabin/Documents/wordcloud_demo.mp4"></video>
+<video src="WebContent/img/wordcloud_demo.mp4"></video>
+
+
 
 ## 프로그램 설명
 
