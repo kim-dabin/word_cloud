@@ -1,6 +1,6 @@
 # word cloud
 
-<video src="https://github.com/kim-dabin/word_cloud/blob/master/WebContent/img/wordcloud_demo.mp4"></video>
+<video src="WebContent/img/wordcloud_demo.mp4"></video>
 
 
 
