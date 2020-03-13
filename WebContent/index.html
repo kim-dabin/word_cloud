@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>워드 클라우드</title>
+<link rel="stylesheet" href="css/all.min.css" />
+<link rel="stylesheet" href="css/jqcloud.min.css" />
+<link href="https://fonts.googleapis.com/css?family=Jua&display=swap" rel="stylesheet">
+ <!-- <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script> -->
+<style>
+	#wrap {
+		text-align:center;
+		width:90%;
+		height:90%;
+		position: fixed;
+		left:5%;
+		top:5%;
+		font-family: 'Jua', sans-serif;
+	}
+	h1 {
+		font-size:60px;
+	}
+	#searchBox{
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
+		/*background-color: red;*/
+		position:relative;
+		z-index: 1;
+		text-align: center;
+		
+	}
+	#searchBox #form{
+		width: 500px;
+		height: 36px;
+		line-height: 40px;
+		margin: auto;
+	}
+	input, button {
+	font-size:22px;
+	font-family: 'Jua', sans-serif;
+	height: 40px;
+	line-height: 40px;
+
+	}
+	button{
+	width:40px;
+	line-height: 40px;
+	background-color: rgba(255, 255, 255, 0.4);
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+		cursor: pointer;
+		border-radius: 20px;
+		color: #f39700;
+		opacity: 0.5;
+		text-align: center;
+		padding:0;
+		border:0;
+		
+	}
+	button:hover{
+		background-color: #f39700;
+		color: #fff;
+		opacity: 1;
+		transition: .2s ease;
+	}
+	#cloud {
+	font-family: 'Jua', sans-serif;
+		width:100%;
+		height:90%;
+		position: absolute;
+		left:0;
+		top:10%;
+		/*background-color: yellow;*/
+	}
+	#cloud.loading {
+		background-image:url(img/loader.gif);
+		background-repeat:no-repeat;
+		background-position:center;
+		
+	}
+	.more_btn{
+		display: none;
+		margin: auto;
+		
+	}
+	.more_btn.show{
+		display: block;
+		
+	}
+	#form {
+		display: none;
+	}
+	#form.show {
+		display: block;
+	}
+	
+	
+</style>
+</head>
+<body>
+
+<div id="wrap">
+<h1><i class="fab fa-cloudversify"></i> 워드 클라우드</h1>
+<div id="searchBox">
+<button class="more_btn"><i class="fas fa-search"></i></button>
+<form id="form" class="">
+	<input placeholder="검색어를 입력하세요" type="text" id="q" />
+	<button type="submit"><i class="fas fa-search"></i></button>
+</form>
+</div><!--//#searchBox -->
+
+
+<div id="cloud"></div>
+</div><!--//#wrap -->
+<script src="js/jquery.js"></script>
+<script src="js/jqcloud.min.js"></script>
+<script>
+
+const $form = $("#form");
+const $inp = $("input");
+const $q = $("#q");
+const $cloud = $("#cloud");
+const $btnMore = $(".more_btn");
+let q = "하둡";
+
+getWords();
+
+$form.submit(function(e) {
+	e.preventDefault();
+	
+	q = $q.val();
+	
+	if(q!=""){
+		getWords();
+	}else{
+		$btnMore.addClass('show');
+		$form.removeClass('show');
+	}
+	
+	
+	
+	
+});
+
+$cloud.jQCloud([], {shape: 'rectangular',
+					delay: 10,
+					classPattern: null,
+	  				colors: ["#f39700", "#f4a119", "#f5ab32", "#f6b64c", "#f7c066", "#f9cb7f", "#fad599", "#fbdfb2", "#fceacc", "#fdf4e5"],
+				  fontSize: {
+				    from: 0.1,
+				    to: 0.01
+				  }
+	 		 }); 
+
+function getWords() {
+	$form.removeClass('show');
+	$cloud.empty().addClass('loading');
+	
+	$.ajax({
+		url:"getWords",
+		dataType:"json",
+		data:{q:q},
+		error:function() {
+			alert("결과 없음");
+			$cloud.removeClass('loading');
+			$btnMore.addClass('show');
+		},
+		success:function(json) {
+			
+		//	console.log(json);
+			
+			$cloud.jQCloud('update', json);
+			$cloud.removeClass('loading');
+			$btnMore.addClass('show');
+		}
+	});//ajax() end
+	
+	
+}//getWords() end
+
+$btnMore.on("click",function(){
+	$btnMore.removeClass('show');
+	$form.addClass('show');
+	$inp.val("");
+});
+
+</script>
+</body>
+</html>
