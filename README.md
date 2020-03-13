@@ -1,6 +1,6 @@
 # word cloud
 
-<video src="../WebContent/img/wordcloud_demo.mp4"></video>
+<video src="WebContent/img/wordcloud_demo.mp4"></video>
 
 
 
